@@ -10,12 +10,12 @@
  */
 #define MEMORY_SIZE_SYSTEM         8192
 #define MEMORY_SIZE_LOWPRIO       2048
-#define MEMORY_SIZE_APP           39600
+#define MEMORY_SIZE_APP           38000
 #define MEMORY_SIZE_WORKER        10000
 #define MEMORY_SIZE_OVERLAY       16000
 
 /* Size of the stack in WORDS */
-#define MEMORY_SIZE_APP_STACK     3900
+#define MEMORY_SIZE_APP_STACK     3500
 #define MEMORY_SIZE_WORKER_STACK  100
 #define MEMORY_SIZE_OVERLAY_STACK 450
 
