@@ -47,6 +47,24 @@ static GFont *_thread_cjk_fallback_font(void)
     }
 }
 
+static GFont _fonts_load_cjk_fallback_font(void)
+{
+#ifdef RESOURCE_ID_CJK_NOTIFICATION_18
+    GFont *fallback = _thread_cjk_fallback_font();
+
+    if (!fallback)
+        return NULL;
+
+    if (!*fallback)
+        *fallback = fonts_get_system_font_by_resource_id(
+            RESOURCE_ID_CJK_NOTIFICATION_18);
+
+    return *fallback;
+#else
+    return NULL;
+#endif
+}
+
 void fonts_resetcache()
 {
     KERN_LOG("font", APP_LOG_LEVEL_DEBUG, "Purging fonts");
@@ -154,9 +172,7 @@ void fonts_unload_custom_font(GFont font)
 
 GFont fonts_get_cjk_fallback_font(void)
 {
-    GFont *fallback = _thread_cjk_fallback_font();
-
-    return fallback ? *fallback : NULL;
+    return _fonts_load_cjk_fallback_font();
 }
 
 void fonts_set_cjk_fallback_font(GFont font)

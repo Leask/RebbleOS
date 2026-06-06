@@ -64,7 +64,9 @@ common-character standard, then be measured against platform resource limits.
 
 The renderer asks one font for every glyph. Missing glyphs are replaced with
 the font's fallback box, so RebbleOS adds an optional CJK fallback hook in the
-font loader. If no fallback font has been configured, behavior is unchanged.
+font loader. If the platform resource header defines
+`RESOURCE_ID_CJK_NOTIFICATION_18`, the fallback font is loaded lazily the first
+time a CJK glyph is needed. If that resource is absent, behavior is unchanged.
 
 The glyph lookup path is:
 
@@ -78,17 +80,18 @@ system font with the same CJK bitmaps. The fallback font should be generated
 with a line height close to the notification font it supplements; line layout
 still uses the primary font's line height.
 
-After adding a generated `.pbf` to a resource pack, load it once for the current
-app or overlay thread and register it:
+After adding a generated `.pbf` to a resource pack, expose it as
+`RESOURCE_ID_CJK_NOTIFICATION_18`. The system renderer will then load it
+automatically per app or overlay thread when Chinese text is first rendered.
+Code that needs to override the fallback can still register a custom font:
 
 ```c
 GFont cjk_font = fonts_get_system_font(FONT_KEY_CJK_NOTIFICATION_18);
 fonts_set_cjk_fallback_font(cjk_font);
 ```
 
-The notification layer does this automatically when the platform resource
-header defines `RESOURCE_ID_CJK_NOTIFICATION_18`. Without that resource, the
-fallback hook is empty and the firmware keeps its previous behavior.
+Without `RESOURCE_ID_CJK_NOTIFICATION_18`, the fallback hook is empty and the
+firmware keeps its previous behavior.
 
 Do not call `fonts_set_cjk_fallback_font()` with a temporary custom font unless
 the same code also unloads it through `fonts_unload_custom_font()`. Unloading a
