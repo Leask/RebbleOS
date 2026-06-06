@@ -1,5 +1,6 @@
 #include "time_impl.h"
 #include <errno.h>
+#include "rebble_time.h"
 
 time_t mktime(struct tm *tm)
 {

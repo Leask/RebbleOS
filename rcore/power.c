@@ -5,6 +5,7 @@
  * Author: Barry Carter <barry.carter@gmail.com>
  */
 #include <stdbool.h>
+#include "platform.h"
 #include "power.h"
 #include "rebbleos.h"
 #include "notification_manager.h"

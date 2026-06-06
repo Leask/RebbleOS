@@ -138,6 +138,7 @@ Window *overlay_window_stack_get_top_window(void);
  * @return \ref OverlayWindow that is very topmost
  */
 OverlayWindow *overlay_stack_get_top_overlay_window(void);
+list_head *overlay_window_get_list_head(void);
 
 /** 
  * @brief Given a \ref Window, check all \ref OverlayWindow objects for any match

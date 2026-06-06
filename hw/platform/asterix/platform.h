@@ -95,4 +95,8 @@ static inline uint8_t is_interrupt_set(void)
     return ((volatile int)(SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk)) != 0 ;
 }
 
+void hw_power_init(void);
+uint16_t hw_power_get_bat_mv(void);
+uint8_t hw_power_get_chg_status(void);
+
 #endif

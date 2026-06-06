@@ -35,6 +35,14 @@ struct n_GRect;
 
 #include "gbitmap.h"
 
+struct n_GContext;
+
+GBitmap *graphics_capture_frame_buffer(struct n_GContext *context);
+GBitmap *graphics_capture_frame_buffer_format(struct n_GContext *context,
+    int format);
+bool graphics_release_frame_buffer(struct n_GContext *context,
+    GBitmap *bitmap);
+
 int32_t sin_lookup(int32_t angle);
 int32_t cos_lookup(int32_t angle);
 
@@ -87,4 +95,3 @@ typedef struct {
 GEdgeInsetsN(__VA_ARGS__, GEdgeInsets4, GEdgeInsets3, GEdgeInsets2, GEdgeInsets1)(__VA_ARGS__)
 
 GRect grect_inset(GRect rect, GEdgeInsets insets);
-

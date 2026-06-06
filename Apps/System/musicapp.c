@@ -146,30 +146,33 @@ uint32_t one_at_a_time_hash(const uint8_t* key, size_t length) {
   return hash;
 }
 
-n_GColor8 songColor(unsigned char *str)
+n_GColor8 songColor(const char *str)
 {
-	uint32_t hash = one_at_a_time_hash(str,strlen(str));
-	    APP_LOG("music", APP_LOG_LEVEL_DEBUG, "song hash:%lu",hash);
+    uint32_t hash = one_at_a_time_hash((const uint8_t *)str, strlen(str));
+    APP_LOG("music", APP_LOG_LEVEL_DEBUG, "song hash:%lu", hash);
 
-	return GColorFromRGB(hash, hash >> 8, hash >> 16);
+    return GColorFromRGB(hash, hash >> 8, hash >> 16);
 }
 
-void _music_info(EventServiceCommand command, void *data)
+void _music_info(EventServiceCommand command, void *data, void *context)
 {
-       if (_music_track)
-	        app_free(_music_track);
+    (void)context;
 
-	    MusicTrackInfo *amusic = protocol_music_decode(data);
-	    _music_track = amusic;
+    if (_music_track)
+        app_free(_music_track);
 
-	    APP_LOG("music", APP_LOG_LEVEL_DEBUG,"Title: %s", amusic->title);
-	    APP_LOG("music", APP_LOG_LEVEL_DEBUG,"Artist: %s", amusic->artist);
-	    APP_LOG("music", APP_LOG_LEVEL_DEBUG,"Album: %s", amusic->album);
-	    APP_LOG("music", APP_LOG_LEVEL_DEBUG,"Length: %s", amusic->track_length);
+    MusicTrackInfo *amusic = protocol_music_decode(data);
+    _music_track = amusic;
 
-	    s_artist = (char *)amusic->artist;
-	    s_track = (char *)amusic->title;
-	    s_length = (char *)amusic->track_length;
+    APP_LOG("music", APP_LOG_LEVEL_DEBUG, "Title: %s", amusic->title);
+    APP_LOG("music", APP_LOG_LEVEL_DEBUG, "Artist: %s", amusic->artist);
+    APP_LOG("music", APP_LOG_LEVEL_DEBUG, "Album: %s", amusic->album);
+    APP_LOG("music", APP_LOG_LEVEL_DEBUG, "Length: %lu",
+        amusic->track_length);
+
+    s_artist = (char *)amusic->artist;
+    s_track = (char *)amusic->title;
+    s_length = amusic->track_length;
 }
 
 
@@ -432,12 +435,14 @@ static void _main_layer_update_proc(Layer *layer, GContext *ctx) {
     char time_string[8] = "";
     strftime(time_string, 8, "%R", &s_last_time);
 
-    char progress_string[6] = "";
+    char progress_string[16] = "";
     // TODO display tracks over 59:59s long differently
-    snprintf(progress_string, 6, "%ld:%02ld", s_progress / 60, s_progress % 60);
+    snprintf(progress_string, sizeof(progress_string), "%ld:%02ld",
+        s_progress / 60, s_progress % 60);
 
-    char length_string[6] = "";
-    snprintf(length_string, 6, "%ld:%02ld", s_length / 60, s_length % 60);
+    char length_string[16] = "";
+    snprintf(length_string, sizeof(length_string), "%ld:%02ld",
+        s_length / 60, s_length % 60);
 
     graphics_context_set_text_color(ctx, GColorBlack);
     graphics_draw_text(ctx, s_artist,

@@ -120,7 +120,8 @@ GBitmap *graphics_capture_frame_buffer(n_GContext *context)
     return &_fb_gbitmap;
 }
 
-GBitmap *graphics_capture_frame_buffer_format(n_GContext *context, int format)
+GBitmap *graphics_capture_frame_buffer_format(n_GContext *context,
+    int format)
 {
     // rbl_lock_frame_buffer
     LOG_DEBUG("fb lock");
@@ -133,10 +134,11 @@ GBitmap *graphics_capture_frame_buffer_format(n_GContext *context, int format)
 #endif
 }
 
-void graphics_release_frame_buffer(n_GContext *context, GBitmap *bitmap)
+bool graphics_release_frame_buffer(n_GContext *context, GBitmap *bitmap)
 {
     // rbl_unlock_frame_buffer
     LOG_DEBUG("fb unlock");
+    return true;
 }
 
 

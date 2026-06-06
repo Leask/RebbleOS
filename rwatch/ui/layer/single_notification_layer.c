@@ -19,6 +19,14 @@
 
 static void single_notification_layer_update_proc(Layer *layer, GContext *ctx);
 
+static void _single_notification_layer_configure_cjk_fallback(void)
+{
+#ifdef RESOURCE_ID_CJK_NOTIFICATION_18
+    fonts_set_cjk_fallback_font(
+        fonts_get_system_font(FONT_KEY_CJK_NOTIFICATION_18));
+#endif
+}
+
 #define X_PADDING 4
 
 #define APPNAME_HEIGHT 28
@@ -135,6 +143,8 @@ Layer *single_notification_layer_get_layer(SingleNotificationLayer *l) {
 
 uint16_t single_notification_layer_height(SingleNotificationLayer *l) {
     uint16_t height = 0;
+
+    _single_notification_layer_configure_cjk_fallback();
     
     GRect szrect = layer_get_frame(&l->layer);
     szrect.size.h = 1000;
@@ -169,6 +179,8 @@ static void single_notification_layer_update_proc(Layer *layer, GContext *ctx) {
     SingleNotificationLayer *l = container_of(layer, SingleNotificationLayer, layer);
     GRect szrect = layer_get_frame(layer);
     GSize outsz;
+
+    _single_notification_layer_configure_cjk_fallback();
     
     graphics_context_set_fill_color(ctx, GColorWhite);
     graphics_fill_rect(ctx, szrect, 0, GCornerNone);

@@ -68,9 +68,10 @@ uint8_t blob_insert(pcol_blob_db_key *blob)
 {
     pcol_blob_db_insert *iblob = (pcol_blob_db_insert *)blob;
     void *val_sz_start = (void *)blob + sizeof(pcol_blob_db_key) + blob->key_size;
-    uint8_t val_sz = *((uint8_t *)val_sz_start);
+    uint16_t val_sz;
     int key_size = blob->key_size;
 
+    memcpy(&val_sz, val_sz_start, sizeof(val_sz));
     printf("  ValueSize: %d, %d\n", val_sz, key_size);
     void *val_start = val_sz_start + sizeof(iblob->value_size);
 

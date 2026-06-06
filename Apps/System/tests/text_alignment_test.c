@@ -28,7 +28,7 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context)
 
     text_layer_set_text_alignment(s_multiline_label_layer, s_text_alignment);
 
-    layer_mark_dirty(window_get_root_layer(s_test_layer));
+    layer_mark_dirty(s_test_layer);
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context)
@@ -39,14 +39,14 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context)
         s_string_index = (int)(sizeof(s_test_strings) / sizeof(s_test_strings[0])) - 1;
 
     text_layer_set_text(s_multiline_label_layer, s_test_strings[s_string_index]);
-    layer_mark_dirty(window_get_root_layer(s_test_layer));
+    layer_mark_dirty(s_test_layer);
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context)
 {
     s_string_index = (s_string_index + 1) % (int)(sizeof(s_test_strings) / sizeof(s_test_strings[0]));
     text_layer_set_text(s_multiline_label_layer, s_test_strings[s_string_index]);
-    layer_mark_dirty(window_get_root_layer(s_test_layer));
+    layer_mark_dirty(s_test_layer);
 }
 
 static void click_config_provider(void *context)

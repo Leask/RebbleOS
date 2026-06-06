@@ -1,6 +1,7 @@
 #include "time_impl.h"
 #include <errno.h>
 #include <limits.h>
+#include "rebble_time.h"
 //#include "libc.h"
 
 struct tm *localtime_r(const time_t *restrict t, struct tm *restrict tm)

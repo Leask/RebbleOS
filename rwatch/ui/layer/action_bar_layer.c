@@ -77,7 +77,7 @@ void action_bar_layer_add_to_window(ActionBarLayer *action_bar, struct Window *w
 {
     Layer *window_layer = window_get_root_layer(window);
     layer_add_child(window_layer, &action_bar->layer);
-    window_set_click_config_provider_with_context(window, (ClickConfigProvider) action_bar->click_config_provider,
+    window_set_click_config_provider_with_context(window, action_bar->click_config_provider,
                                                   action_bar);
     
     GRect bounds = layer_get_unobstructed_bounds(window_layer);

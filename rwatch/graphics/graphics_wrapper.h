@@ -19,3 +19,6 @@ void graphics_draw_bitmap_in_rect(GContext *ctx, const GBitmap *bitmap, GRect re
 void graphics_draw_pixel(n_GContext * ctx, n_GPoint p);
 void graphics_draw_rect(n_GContext * ctx, n_GRect rect, uint16_t radius, n_GCornerMask mask);
 GBitmap *graphics_capture_frame_buffer(n_GContext *context);
+GBitmap *graphics_capture_frame_buffer_format(n_GContext *context,
+    int format);
+bool graphics_release_frame_buffer(n_GContext *context, GBitmap *bitmap);

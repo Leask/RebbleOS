@@ -147,8 +147,10 @@ static void exit_to_watchface(struct Menu *menu, void *context)
 static MusicTrackInfo *_music_track;
 static MenuItems *items;
 
-static void _music_info(EventServiceCommand command, void *data)
+static void _music_info(EventServiceCommand command, void *data, void *context)
 {
+    (void)context;
+
     if (_music_track)
         app_free(_music_track);
 

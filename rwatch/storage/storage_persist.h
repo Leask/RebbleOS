@@ -169,4 +169,4 @@ status_t persist_delete(const uint32_t key);
 
 
 status_t persist_write(const uint32_t key, const void *data, size_t size);
-status_t persist_read(const uint32_t key, const void *buffer, const size_t size);
+status_t persist_read(const uint32_t key, void *buffer, const size_t size);

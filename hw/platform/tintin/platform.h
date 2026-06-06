@@ -19,6 +19,7 @@
 
 #define REGION_FS_START         0x2c0000
 #define REGION_FS_PAGE_SIZE     0x1000
+#define REGION_FS_ERASE_SIZE    REGION_FS_PAGE_SIZE
 #define REGION_FS_N_PAGES       ((0x3E0000 - REGION_FS_START) / REGION_FS_PAGE_SIZE)
 
 #define REGION_APP_RES_START    0xB3A000
@@ -69,5 +70,9 @@ static inline uint8_t is_interrupt_set(void)
 {
     return ((volatile int)(SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk)) != 0 ;
 }
+
+void hw_power_init(void);
+uint16_t hw_power_get_bat_mv(void);
+uint8_t hw_power_get_chg_status(void);
 
 #endif

@@ -24,6 +24,7 @@
 #include "pebble_protocol.h"
 #include "protocol_service.h"
 #include "notification_manager.h"
+#include "fs_internal.h"
 
 /* Configure Logging */
 #define MODULE_NAME "pcolxfr"

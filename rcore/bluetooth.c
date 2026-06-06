@@ -41,6 +41,8 @@
 #include "protocol_service.h"
 #include "service.h"
 #include "rdb.h"
+#include "btstack_config.h"
+#include "btstack_rebble.h"
 
 /* Stack sizes of the threads */
 #define STACK_SZ_CMD configMINIMAL_STACK_SIZE + 600

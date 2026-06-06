@@ -271,13 +271,22 @@ void packet_send_to_transport(RebblePacket packet, uint16_t endpoint, uint8_t *d
 
 /* Timer */
 
+static void _protocol_service_timer_callback(CoreTimer *timer)
+{
+    ProtocolTimer *ptimer = (ProtocolTimer *)timer;
+
+    if (ptimer->callback)
+        ptimer->callback(ptimer);
+}
+
 ProtocolTimer *protocol_service_timer_create(ProtocolTimerCallback pcallback, TickType_t timeout)
 {
     ProtocolTimer *ct = mem_heap_alloc(&mem_heaps[HEAP_LOWPRIO], sizeof(ProtocolTimer));
     assert(ct);
     memset(ct, 0, sizeof(ProtocolTimer));
 
-    ct->timer.callback = pcallback;
+    ct->timer.callback = _protocol_service_timer_callback;
+    ct->callback = pcallback;
     ct->timeout_ms = timeout;
     return ct;
 }

@@ -30,16 +30,36 @@ GFont fonts_get_system_font_by_resource_id(uint32_t resource_id);
 
 static GFontCache *_app_font_cache = NULL;
 static GFontCache *_ovl_font_cache = NULL;
+static GFont _app_cjk_fallback_font = NULL;
+static GFont _ovl_cjk_fallback_font = NULL;
+
+static GFont *_thread_cjk_fallback_font(void)
+{
+    switch (appmanager_get_thread_type())
+    {
+    case AppThreadMainApp:
+        return &_app_cjk_fallback_font;
+    case AppThreadOverlay:
+        return &_ovl_cjk_fallback_font;
+    default:
+        KERN_LOG("font", APP_LOG_LEVEL_ERROR, "Why you need fonts?");
+        return NULL;
+    }
+}
 
 void fonts_resetcache()
 {
-    struct GFontCache **cachep;
-    
     KERN_LOG("font", APP_LOG_LEVEL_DEBUG, "Purging fonts");
     switch (appmanager_get_thread_type())
     {
-    case AppThreadMainApp: _app_font_cache = NULL; break;
-    case AppThreadOverlay: _ovl_font_cache = NULL; break;
+    case AppThreadMainApp:
+        _app_font_cache = NULL;
+        _app_cjk_fallback_font = NULL;
+        break;
+    case AppThreadOverlay:
+        _ovl_font_cache = NULL;
+        _ovl_cjk_fallback_font = NULL;
+        break;
     default:
         KERN_LOG("font", APP_LOG_LEVEL_ERROR, "Why you need fonts?");
         return;
@@ -123,8 +143,28 @@ GFont fonts_load_custom_font_proxy(ResHandle handle)
  */
 void fonts_unload_custom_font(GFont font)
 {
+    GFont *fallback = _thread_cjk_fallback_font();
+
+    if (fallback && *fallback == font)
+        *fallback = NULL;
+
     _fonts_glyphcache_purge(font);
     app_free(font);
+}
+
+GFont fonts_get_cjk_fallback_font(void)
+{
+    GFont *fallback = _thread_cjk_fallback_font();
+
+    return fallback ? *fallback : NULL;
+}
+
+void fonts_set_cjk_fallback_font(GFont font)
+{
+    GFont *fallback = _thread_cjk_fallback_font();
+
+    if (fallback)
+        *fallback = font;
 }
 
 #define EQ_FONT(font) (strncmp(key, "RESOURCE_ID_" #font, strlen(key)) == 0) return RESOURCE_ID_ ## font;
@@ -173,6 +213,9 @@ uint16_t _fonts_get_resource_id_for_key(const char *key)
     else if EQ_FONT(LECO_28_LIGHT_NUMBERS)
     else if EQ_FONT(LECO_42_NUMBERS)
     else if EQ_FONT(FONT_FALLBACK)
+#ifdef RESOURCE_ID_CJK_NOTIFICATION_18
+    else if EQ_FONT(CJK_NOTIFICATION_18)
+#endif
                                                                                                                                 
     return RESOURCE_ID_FONT_FALLBACK;
 }

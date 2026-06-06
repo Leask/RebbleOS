@@ -9,6 +9,7 @@
  */
 
 #include "FreeRTOS.h"
+#include <string.h>
 #include "task.h"
 #include "queue.h"
 #include "service.h"

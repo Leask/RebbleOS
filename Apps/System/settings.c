@@ -19,6 +19,10 @@ static GBitmap *_bt_pair_accept, *_bt_pair_reject;
 static StatusBarLayer *_bt_pair_status;
 static char *_bt_pair_name;
 
+void settings_tz_invoke(void);
+void settings_tz_init(void);
+void settings_tz_deinit(void);
+
 static void _bluetooth_pair_request(EventServiceCommand svc, void *data, void *ctx) {
     const char *name = (const char *)data;
     APP_LOG("settings", APP_LOG_LEVEL_INFO, "BT pair request: %s", name);

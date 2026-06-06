@@ -191,7 +191,7 @@ status_t persist_write(const uint32_t key, const void *data, const size_t size)
             return E_ERROR;
         }
     } else {    
-        if (rdb_update(db, &c_key, sizeof(c_key), data, size) != Blob_Success) {
+        if (rdb_update(db, (uint8_t *)&c_key, sizeof(c_key), data, size) != Blob_Success) {
             rdb_close(db);
             return E_ERROR;
         }
@@ -201,7 +201,7 @@ status_t persist_write(const uint32_t key, const void *data, const size_t size)
     return size;
 }
 
-status_t persist_read(const uint32_t key, const void *buffer, const size_t size)
+status_t persist_read(const uint32_t key, void *buffer, const size_t size)
 {
     struct rdb_iter it;
     rdb_select_result_list head;

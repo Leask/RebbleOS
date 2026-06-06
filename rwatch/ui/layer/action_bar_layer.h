@@ -22,7 +22,7 @@ typedef struct ActionBarLayer
     GBitmap *icons[NUM_ACTION_BAR_ITEMS + 1];
     GColor background_color;
     void *context;
-    ClickConfigProvider *click_config_provider;
+    ClickConfigProvider click_config_provider;
 } ActionBarLayer;
 
 void action_bar_layer_ctor(ActionBarLayer *mlayer, GRect frame);

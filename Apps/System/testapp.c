@@ -108,7 +108,7 @@ app_test _tests[] = {
 
 #define TEST_COUNT sizeof(_tests) / sizeof(app_test)
 static Window *_test_window;
-static AppTimer *_test_exec_timer;
+static AppTimerHandle _test_exec_timer;
 static app_test *_running_test = NULL;
 static bool _window_initialised = false;
 
